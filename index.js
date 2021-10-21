@@ -1,5 +1,4 @@
 const Gun = require('gun/gun')
-const isFn = require('is-fn')
 
 // Add listener
 Gun.on('opt', function (context) {
@@ -11,12 +10,8 @@ Gun.on('opt', function (context) {
 
   const { isValid } = context.opt
 
-  if (!isValid) {
+  if (typeof isValid !== 'function') {
     throw new Error('you must pass in an isValid function')
-  }
-
-  if (!isFn(isValid)) {
-    throw new Error('isValid must be a function')
   }
 
   // Check all incoming traffic
