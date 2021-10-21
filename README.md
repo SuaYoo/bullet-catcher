@@ -5,7 +5,7 @@
 
 Restrict put on a [gun](https://github.com/amark/gun) server
 
-This module will listen to ```in``` and run your supplied validation function against all `put` messages.
+This module will listen to `in` and run your supplied validation function against all `put` messages.
 
 ## Usage
 
@@ -58,6 +58,23 @@ Gun.on('opt', function (ctx) {
     to.next(msg) // pass to next middleware
   })
 })
+```
+
+If `isValid` returns an `Error`, that error will be added to the gun context.
+
+```js
+function hasValidToken(msg) {
+  if (msg.headers.token) {
+    if (msg.headers.token.isExpired) {
+      return new Error('Invalid token')
+    }
+
+    return true
+  }
+
+  return false
+}
+// `err` in the .put callback is now "Invalid token"
 ```
 
 ## Related

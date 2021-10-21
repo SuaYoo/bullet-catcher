@@ -24,8 +24,14 @@ Gun.on('opt', function (context) {
     var to = this.to
     // restrict put
     if (msg.put) {
-      if (isValid(msg)) {
-        to.next(msg)
+      const isValidMsg = isValid(msg)
+
+      if (isValidMsg instanceof Error) {
+        context.on('in', { '@': msg['#'], err: isValidMsg.message })
+      } else {
+        if (isValidMsg) {
+          to.next(msg)
+        }
       }
     } else {
       to.next(msg)
